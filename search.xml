@@ -1,46 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-  
-    
-    <entry>
-      <title></title>
-      <link href="2022/06/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E8%AF%95/"/>
-      <url>2022/06/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E8%AF%95/</url>
-      
-        <content type="html"><![CDATA[<h2 id="学习Java后端需要掌握的技能"><a href="#学习Java后端需要掌握的技能" class="headerlink" title="学习Java后端需要掌握的技能"></a>学习Java后端需要掌握的技能</h2><ol><li>掌握Java基础知识</li><li>掌握多线程的简单实用。一定要学习<strong>算法和数据结构</strong>。</li><li>学习前端基础（HTML、CSS、JavaScript），也要了解BootStrap\vue等前端框架。</li><li>学习MySQL的基本使用，SQL命令。</li><li>学习<strong>Maven</strong>。</li><li>Spring、 SpringMVC、 Hibernate、Mybatis 等框架的使用， (可选)熟悉 Spring 原理（大厂面试必备），然后很有必要学习⼀下SpringBoot。推荐把Spring、 SpringMVC好好学⼀下。</li><li>学习Linux的基本使用（常见命令、基本概念）</li><li>. 学习Dubbo、 Zookeeper、常见的消息队列（比如ActiveMq、 RabbitMQ）的使用.（这些东西可以通过黑马最后⼀个分布式项目来学，边看视频，边自己做，查阅网上博客，效果更好）。</li><li>可以学习<strong>NIO</strong>和<strong>Netty</strong>，丰富简历。</li><li>如果想去大厂， JVM 的⼀些知识也是必学的（Java内存区域、虚拟机垃圾算法、虚拟垃圾收集器、 JVM内存管理）推荐《深⼊理解Java虚拟机： JVM⾼级特性与最佳实践（最新第⼆版》</li></ol><h2 id="大厂要求"><a href="#大厂要求" class="headerlink" title="大厂要求"></a>大厂要求</h2><ol><li>底层知识比如<strong>JVM</strong>：不只是懂理论更会实操。</li><li>面向对象编程能力：SOLID软件设计原则，《写了这么多年代码，你真的了解SOLID》吗。</li><li><strong>框架能力</strong>：搞懂原理，看源码。</li><li><strong>分布式系统开发能力</strong>：缓存、消息队列等等都要掌握，关键是还要能解决实际问题。</li><li>追求写出优雅的代码，尝试新技术。</li></ol>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>我的博客</title>
-      <link href="2020/09/15/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/"/>
-      <url>2020/09/15/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Hello World</title>
-      <link href="2020/09/15/hello-world/"/>
-      <url>2020/09/15/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><a id="more"></a><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-  
-  
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/09/15/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>JAVA学习</title>
+    <url>/2022/06/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E8%AF%95/</url>
+    <content><![CDATA[<h2 id="学习Java后端需要掌握的技能"><a href="#学习Java后端需要掌握的技能" class="headerlink" title="学习Java后端需要掌握的技能"></a>学习Java后端需要掌握的技能</h2><ol>
+<li><p>掌握Java基础知识</p>
+<a id="more"></a>
+</li>
+<li><p>掌握多线程的简单实用。一定要学习<strong>算法和数据结构</strong>。</p>
+</li>
+<li><p>学习前端基础（HTML、CSS、JavaScript），也要了解BootStrap\vue等前端框架。</p>
+</li>
+<li><p>学习MySQL的基本使用，SQL命令。</p>
+</li>
+<li><p>学习<strong>Maven</strong>。</p>
+</li>
+<li><p>Spring、 SpringMVC、 Hibernate、Mybatis 等框架的使用， (可选)熟悉 Spring 原理（大厂面试必备），然后很有必要学习⼀下SpringBoot。推荐把Spring、 SpringMVC好好学⼀下。</p>
+</li>
+<li><p>学习Linux的基本使用（常见命令、基本概念）</p>
+</li>
+<li><p>. 学习Dubbo、 Zookeeper、常见的消息队列（比如ActiveMq、 RabbitMQ）的使用.（这些东西可以通过黑马最后⼀个分布式项目来学，边看视频，边自己做，查阅网上博客，效果更好）。</p>
+</li>
+<li><p>可以学习<strong>NIO</strong>和<strong>Netty</strong>，丰富简历。</p>
+</li>
+<li><p>如果想去大厂， JVM 的⼀些知识也是必学的（Java内存区域、虚拟机垃圾算法、虚拟垃圾收集器、 JVM内存管理）推荐《深⼊理解Java虚拟机： JVM⾼级特性与最佳实践（最新第⼆版》</p>
+</li>
+</ol>
+<h2 id="大厂要求"><a href="#大厂要求" class="headerlink" title="大厂要求"></a>大厂要求</h2><ol>
+<li>底层知识比如<strong>JVM</strong>：不只是懂理论更会实操。</li>
+<li>面向对象编程能力：SOLID软件设计原则，《写了这么多年代码，你真的了解SOLID》吗。</li>
+<li><strong>框架能力</strong>：搞懂原理，看源码。</li>
+<li><strong>分布式系统开发能力</strong>：缓存、消息队列等等都要掌握，关键是还要能解决实际问题。</li>
+<li>追求写出优雅的代码，尝试新技术。</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>我的博客</title>
+    <url>/2020/09/15/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[]]></content>
+  </entry>
 </search>
