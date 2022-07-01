@@ -1,59 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-  
-    
-    <entry>
-      <title></title>
-      <link href="2022/07/01/%E8%AE%BA%E6%96%87%E8%A7%A3%E6%9E%90/"/>
-      <url>2022/07/01/%E8%AE%BA%E6%96%87%E8%A7%A3%E6%9E%90/</url>
-      
-        <content type="html"><![CDATA[<hr><p>title:RAU-GNN模型解析</p><p>引自论文&gt;Relevance-Aware Anomalous Users Detection in Social Network via Graph Neural Network</p><hr><h3 id="1-摘要"><a href="#1-摘要" class="headerlink" title="1  摘要"></a>1  摘要</h3><p>​        社交网络中的异常用户检测是解决安全问题的当务之急。受图神经网络(gnn)强大功能的推动，目前许多研究采用基于gnn的检测器来检测异常用户。然而，社交活动规模的不断扩大、用户的爆炸式增长以及多种技术伪装，使得用户检测成为一项艰巨的任务。本文提出了一种创新的关联感知异常用户检测模型(RAU-GNN)，以获得细粒度的检测结果。<a id="more"></a>RAU-GNN<strong>首先提取社交网络中所有类型用户的多个关系</strong>，包括良性用户和异常用户，并据此构建多个用户关系图。其次，我们<strong>采用关联感知的GNN框架来学习用户隐藏的特征，并对异常用户进行识别</strong>。具体而言，我们将图卷积网络(GCN)和图注意网络(GAT)结合起来，设计了一个基于GCN的关系融合层来聚合来自不同关系的初始信息，以及一个基于GAT的嵌入层来获得高级嵌入。最后，我们将学习到的表示提供给下面的GNN层，以便通过聚合最终用户嵌入来巩固节点嵌入。我们对真实世界的数据集进行了广泛的实验。实验结果表明，该方法能够获得较高的异常用户检测精度。</p><h3 id="2-论文贡献"><a href="#2-论文贡献" class="headerlink" title="2  论文贡献"></a>2  论文贡献</h3><p>​        为了进一步检测社交网络中伪装良好的用户，本文提出了一种基于gnn的关联感知异常用户检测(RAU-GNN)模型，实现了细粒度的异常用户检测结果。我们首先提取社交网络中所有用户的多重关系。用户之间的关系大致可以定义为一种互动，包括转发、评论或转发等[22]。对于异常用户，他们更喜欢转发类似的博客，同时采取行动。所有这些特征都可以构造成一个统一的多元关系图。其次，我们利用基于关联感知的gnn框架，从用户那里学习所构造关系图中的隐藏表示。具体而言，我们采用GCN模块对不同关系的结构信息进行初始聚合，并将处理后的融合特征嵌入到中心节点。然后我们使用多头GAT模块学习高级嵌入，我们将最终的节点嵌入提供给下一GNN层，并聚合来自其邻居的所有用户信息，以巩固以前的嵌入。最后利用二值分类算法对学习到的特征进行分类，并对异常用户进行判别。实验结果表明，RAU-GNN能够获得较高的异常用户检测精度，优于其他可比较的基线模型。RAU-GNN的主要贡献如下:</p><ul><li>我们从用户中提取不同的关系，从而建立一个多关系的用户图网络作为RAU-GNN的基础，并探索不同用户和关系的重要性。</li><li>我们提出了一种基于关联感知GNN框架的异常检测器RAU-GNN，该异常检测器由基于gcn的关系融合层、基于gat的嵌入层和最终的GNN聚合器组成。这些GNN层的集成可以更好地学习高级表示，并识别精心设计的伪装。</li><li>在真实数据集上进行了大量的实验，以验证RAU-GNN在异常用户检测上的有效性。结果表明，我们的方法可以达到较高的精度，并优于其他经典的可比基线模型。</li></ul><h3 id="3-框架的详细解析"><a href="#3-框架的详细解析" class="headerlink" title="3  框架的详细解析"></a>3  框架的详细解析</h3><h4 id="A-框架总述"><a href="#A-框架总述" class="headerlink" title="A.框架总述"></a>A.框架总述</h4><p><img src="C:\Users\64203\AppData\Roaming\Typora\typora-user-images\image-20220701162110061.png" alt="image-20220701162110061"></p><p>​        本文提出的RAU-GNN总体框架如图2所示。具体而言，我们的RAU-GNN包含三个过程，包括构建用户的多个关系图，一个基于gnn的集成框架来学习高级表示，以及一个识别层来检测异常用户。本文提出的基于GNN的框架集成了三层，包括基于gcn的关系融合层、基于gat的嵌入层和最终的GNN聚合器。以下章节将详细介绍RAU-GNN的更多细节。</p><h4 id="B-多重关系图的构造"><a href="#B-多重关系图的构造" class="headerlink" title="B.多重关系图的构造"></a>B.多重关系图的构造</h4><p>​        在预处理过程中，我们的目标是统一所有用户及其关系，并将其分解为一组<strong>基于关系的同构图</strong>。首先，我们提取出面向用户的元素，如推文、评论等，并将其统一组织，以表示不同的关系。例如，我们提取一条显示User1对其他用户推文的评论的推文。我们将User1表示为v1，并在v1和提取的tweet评论之间添加边。我们对社交网络中的所有用户重复相同的过程，得到一个<strong>复杂的异构图</strong>。</p><p>​        接下来，我们将初始图分解为多个关系图。多关系图只包含用户节点，且不同的边属性表示不同类型的关系。具体来说，分离过程定义如下：<br>$$<br>U^r_{i,j} = \left[\sum{W_{vr}\cdot W_{vr}^T}\right],r\in{f,c,p,h}<br>$$<br>4个关系分别为<em>following, commenting/replying, posting/retweeting, and hashtagging</em>。这里邻接矩阵$U^r_{N \times N}$是基于某种关系$r$下的同构用户图。$W_{vr}$代表行是用户节点，列是关系类型$r$的子矩阵。最后我们把提取到的用户特征向量用于多重关系图。初始特征记为$X = {x_v\in R^d}$，其中$x_v$是用户的初始$d$维特征向量。我们收集了所有关系的子图${U^r}|<em>{r=1}^R$然后，得到了处理好的多重关系图$G=\left( X,{U^r}|</em>{r=1}^R,Y\right)$。</p><h4 id="C-关联感知GNN框架"><a href="#C-关联感知GNN框架" class="headerlink" title="C.关联感知GNN框架"></a>C.关联感知GNN框架</h4><ol><li><p><strong><em>GCN-based关系融合层</em></strong>： 我们实现了GCN模块来学习每个关系中的区分用户节点表示，并将学习到的不同关系中的特征<strong>融合到中心节点</strong>。多层GCN的逐层传播规则定义如下：<br>$$<br>\bold{H}_r^{l+1}=\sigma\left(\tilde{D}^{-\frac{1}{2}}\tilde{U}_r\tilde{D}^{-\frac{1}{2}}H_r^{(l)}W^{(l)}\right)<br>$$<br>其中$\tilde{U}_r = U_r+I_N$，$r$代表图$U$的关系类型， $N$ 代表图里的节点总数。$\tilde{D}$</p><p>是 $\tilde{D}_{ii}=\sum_i\tilde{U}_{ij} $ 的对角矩阵 ，$I_N$ 是单位矩阵，$W$ 是参数矩阵，$l$ 代表层数。$\sigma$ 是激活函数，比如<strong>Sigmoid</strong>或者<strong>ReLU</strong>。<strong>GCN</strong>的输入层是$H^{(0)}=X$ ，其中$X$是<strong>B</strong>部分构造的初始特征。我们使用$H_{v_i}^r$ 代表关系$r$下的用户节点$v_i$ 最后的特征表示。</p><p>​        接下来我们将从不同关系下<strong>GCN</strong>层输出的特征表示融合在一起，然后获得最后中心节点的全连接层特征表示。我们将融合方程定义如下：<br>$$<br>z_{v_i} = norm \left(H_{v_i}^{(r=1)}\oplus H_{v_i}^{(r=2)}\oplus \cdot \cdot \cdot \oplus H_{v_i}^{(r=R)}\right)<br>$$<br>其中$v_i$是中心节点。$H_{v_i}^{(r)}$ 是关系$r\in R$和$d’$ 维的输出表示。$\oplus$ 代表结合所有关系下$v_i$的信息的操作，比如<strong>连接</strong>或者<strong>求和</strong>。norm代表为避免过拟合的正则操作。值得注意的是，在经过基于<strong>GCN</strong>的融合过程后，我们将多个关系图通过组合表示统一为一个完整的同构用户图$\mathcal{A}$，其中所有用户都参与其中。我们实现了这个统一的图，以方便进一步的处理。</p></li><li><p><strong><em>GAT_based 嵌入层</em></strong>： 为了更好地看破异常用户的伪装（更好的提取异常用户的特征），我们利<strong>GAT</strong>模块研究社交网络中用户之间的相关性，并将融合特征嵌入到用户图中。具体来说，我们定义<strong>GAT</strong>逐层传播规则如下:<br>$$<br>\bold{h}<em>{v_i}^{(l+1)} \leftarrow \overset{heads}| \left(\bold {h}_{v_i}^{(l)}\oplus \underset{\forall v_j \in N{(v_i)}}{AGG}\left(\bold {h}_{v_j}^{(l)}\right)\right)<br>$$<br>这里$\bold{h}_{v_i}^{(l+1)}$是用户$v_i$在<strong>GAT</strong>第$(l+1)$层的表示，输入$\bold{h}</em>{v_i}^{(0)}$是融合过程$z_{v_i}$的输出。$N(v_i)$表示根据图$\mathcal{A}$用户$v_i$的一组邻居，$\oplus$表示将$v_i$的信息与其邻居结合的算子。$ \overset{heads}|$表示逐头联接。$AGG$ 表示将邻域信息映射为向量的聚合函数。这里我们采用注意力聚合。基于<strong>GAT</strong>的用户嵌入后，我们使用$\bold{h}_{v_i}$作为最终的$d’$维表示。</p><p>​    学习到的表示是检测器对社交网络中用户的认知，融合了自然语言语义、时间活动和完整用户图的结构信息。这些高级表示代表用户特征的核心，有助于识别异常帐户。</p></li><li><p><strong><em>加强的GNN聚合器</em></strong>： 基于关系融合层和嵌入层，我们得到了社交网络中每个用户的隐藏表示。为了实现细粒度的检测结果并能够适应真实场景，我们添加了一个以下增强的GNN聚合器来合并以前的嵌入。我们对GNN聚合的定义如下：<br>$$<br>\mathcal{Z}^{(l+1)} = \sigma\left( \underset{\forall v_j \in N{(v_i)}}{AGG}{(\mathcal{Z}^{(l)}_{v_i}\oplus\mathcal{Z}^{(l+1)}_{v_j})}\right)<br>$$<br>其中$\mathcal{Z}^{(l)}_{v_i}$是第$l$层嵌入的中心节点，$\mathcal{Z}^{(l+1)}_{v_i}$是第$(l+1)$层嵌入的邻居节点。表示嵌入总和。<strong>AGG</strong>表示平均聚集(mean aggregation)。$σ$为激活函数。这里我们采用<strong>ReLU</strong>非线性函数。</p><p>​    由于<strong>GNN</strong>聚合器多用于巩固之前学习的嵌入，而不是学习更高级的语义，所以我们将<strong>GNN</strong>聚合器的输出维数固定为d，与基于<strong>GAT</strong>的嵌入层的输出维数相同，只采用一层<strong>GNN</strong>。</p></li></ol><h4 id="D-优化函数"><a href="#D-优化函数" class="headerlink" title="D.优化函数"></a>D.优化函数</h4><p>​        经过增强的<strong>GNN</strong>聚合器后，对于每个中心用户节点 $v$ ，其最终嵌入是聚合器$\mathcal{Z}<em>v$的输出。因此，我们相应地将RAU-GNN的损失设计为<strong>交叉熵损失函数</strong>，以最小化ground truth-真实值和predicted label-预测标签的差距，实现异常检测。<br>$$<br>\mathcal{L}</em>{RAU-GNN}=-\displaystyle \sum_{v \in \mathcal{V}}log(y_v\cdot\mathcal P_v)+\lambda||\Theta||_2<br>$$<br>式中，$\mathcal V$为用户图中所有节点的集合，$y_v$为节点$v$的标签，$\mathcal P_v$为RAU-GNN预测的概率。我们定义$\mathcal P_v = σ (MLP(\mathcal Z_v))$。$σ$为激活函数。我们在RAU-GNN中采用<strong>Sigmoid</strong>。MLP表示多层感知。$λ$是权重参数，我们加入$||\Theta||_2$，它代表了基于<strong>GNN</strong>的框架中所有模块参数的$L_2$范数，得到了很好的泛化效果。</p>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>JAVA学习</title>
-      <link href="2022/06/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E8%AF%95/"/>
-      <url>2022/06/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E8%AF%95/</url>
-      
-        <content type="html"><![CDATA[<h2 id="学习Java后端需要掌握的技能"><a href="#学习Java后端需要掌握的技能" class="headerlink" title="学习Java后端需要掌握的技能"></a>学习Java后端需要掌握的技能</h2><ol><li><p>掌握Java基础知识</p><a id="more"></a></li><li><p>掌握多线程的简单实用。一定要学习<strong>算法和数据结构</strong>。</p></li><li><p>学习前端基础（HTML、CSS、JavaScript），也要了解BootStrap\vue等前端框架。</p></li><li><p>学习MySQL的基本使用，SQL命令。</p></li><li><p>学习<strong>Maven</strong>。</p></li><li><p>Spring、 SpringMVC、 Hibernate、Mybatis 等框架的使用， (可选)熟悉 Spring 原理（大厂面试必备），然后很有必要学习⼀下SpringBoot。推荐把Spring、 SpringMVC好好学⼀下。</p></li><li><p>学习Linux的基本使用（常见命令、基本概念）</p></li><li><p>. 学习Dubbo、 Zookeeper、常见的消息队列（比如ActiveMq、 RabbitMQ）的使用.（这些东西可以通过黑马最后⼀个分布式项目来学，边看视频，边自己做，查阅网上博客，效果更好）。</p></li><li><p>可以学习<strong>NIO</strong>和<strong>Netty</strong>，丰富简历。</p></li><li><p>如果想去大厂， JVM 的⼀些知识也是必学的（Java内存区域、虚拟机垃圾算法、虚拟垃圾收集器、 JVM内存管理）推荐《深⼊理解Java虚拟机： JVM⾼级特性与最佳实践（最新第⼆版》</p></li></ol><h2 id="大厂要求"><a href="#大厂要求" class="headerlink" title="大厂要求"></a>大厂要求</h2><ol><li>底层知识比如<strong>JVM</strong>：不只是懂理论更会实操。</li><li>面向对象编程能力：SOLID软件设计原则，《写了这么多年代码，你真的了解SOLID》吗。</li><li><strong>框架能力</strong>：搞懂原理，看源码。</li><li><strong>分布式系统开发能力</strong>：缓存、消息队列等等都要掌握，关键是还要能解决实际问题。</li><li>追求写出优雅的代码，尝试新技术。</li></ol>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>我的博客</title>
-      <link href="2020/09/15/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/"/>
-      <url>2020/09/15/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Hello World</title>
-      <link href="2020/09/15/hello-world/"/>
-      <url>2020/09/15/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><a id="more"></a><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-  
-  
+<search>
+  <entry>
+    <title>我的博客</title>
+    <url>/2020/09/15/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2022/07/01/%E8%AE%BA%E6%96%87%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[<hr>
+<p>title:RAU-GNN模型解析</p>
+<p>引自论文&gt;Relevance-Aware Anomalous Users Detection in Social Network via Graph Neural Network</p>
+<hr>
+<h3 id="1-摘要"><a href="#1-摘要" class="headerlink" title="1  摘要"></a>1  摘要</h3><p>​        社交网络中的异常用户检测是解决安全问题的当务之急。受图神经网络(gnn)强大功能的推动，目前许多研究采用基于gnn的检测器来检测异常用户。然而，社交活动规模的不断扩大、用户的爆炸式增长以及多种技术伪装，使得用户检测成为一项艰巨的任务。本文提出了一种创新的关联感知异常用户检测模型(RAU-GNN)，以获得细粒度的检测结果。<a id="more"></a>RAU-GNN<strong>首先提取社交网络中所有类型用户的多个关系</strong>，包括良性用户和异常用户，并据此构建多个用户关系图。其次，我们<strong>采用关联感知的GNN框架来学习用户隐藏的特征，并对异常用户进行识别</strong>。具体而言，我们将图卷积网络(GCN)和图注意网络(GAT)结合起来，设计了一个基于GCN的关系融合层来聚合来自不同关系的初始信息，以及一个基于GAT的嵌入层来获得高级嵌入。最后，我们将学习到的表示提供给下面的GNN层，以便通过聚合最终用户嵌入来巩固节点嵌入。我们对真实世界的数据集进行了广泛的实验。实验结果表明，该方法能够获得较高的异常用户检测精度。</p>
+<h3 id="2-论文贡献"><a href="#2-论文贡献" class="headerlink" title="2  论文贡献"></a>2  论文贡献</h3><p>​        为了进一步检测社交网络中伪装良好的用户，本文提出了一种基于gnn的关联感知异常用户检测(RAU-GNN)模型，实现了细粒度的异常用户检测结果。我们首先提取社交网络中所有用户的多重关系。用户之间的关系大致可以定义为一种互动，包括转发、评论或转发等[22]。对于异常用户，他们更喜欢转发类似的博客，同时采取行动。所有这些特征都可以构造成一个统一的多元关系图。其次，我们利用基于关联感知的gnn框架，从用户那里学习所构造关系图中的隐藏表示。具体而言，我们采用GCN模块对不同关系的结构信息进行初始聚合，并将处理后的融合特征嵌入到中心节点。然后我们使用多头GAT模块学习高级嵌入，我们将最终的节点嵌入提供给下一GNN层，并聚合来自其邻居的所有用户信息，以巩固以前的嵌入。最后利用二值分类算法对学习到的特征进行分类，并对异常用户进行判别。实验结果表明，RAU-GNN能够获得较高的异常用户检测精度，优于其他可比较的基线模型。RAU-GNN的主要贡献如下:</p>
+<ul>
+<li>我们从用户中提取不同的关系，从而建立一个多关系的用户图网络作为RAU-GNN的基础，并探索不同用户和关系的重要性。</li>
+<li>我们提出了一种基于关联感知GNN框架的异常检测器RAU-GNN，该异常检测器由基于gcn的关系融合层、基于gat的嵌入层和最终的GNN聚合器组成。这些GNN层的集成可以更好地学习高级表示，并识别精心设计的伪装。</li>
+<li>在真实数据集上进行了大量的实验，以验证RAU-GNN在异常用户检测上的有效性。结果表明，我们的方法可以达到较高的精度，并优于其他经典的可比基线模型。</li>
+</ul>
+<h3 id="3-框架的详细解析"><a href="#3-框架的详细解析" class="headerlink" title="3  框架的详细解析"></a>3  框架的详细解析</h3><h4 id="A-框架总述"><a href="#A-框架总述" class="headerlink" title="A.框架总述"></a>A.框架总述</h4><p><img src="C:\Users\64203\AppData\Roaming\Typora\typora-user-images\image-20220701162110061.png" alt="image-20220701162110061"></p>
+<p>​        本文提出的RAU-GNN总体框架如图2所示。具体而言，我们的RAU-GNN包含三个过程，包括构建用户的多个关系图，一个基于gnn的集成框架来学习高级表示，以及一个识别层来检测异常用户。本文提出的基于GNN的框架集成了三层，包括基于gcn的关系融合层、基于gat的嵌入层和最终的GNN聚合器。以下章节将详细介绍RAU-GNN的更多细节。</p>
+<h4 id="B-多重关系图的构造"><a href="#B-多重关系图的构造" class="headerlink" title="B.多重关系图的构造"></a>B.多重关系图的构造</h4><p>​        在预处理过程中，我们的目标是统一所有用户及其关系，并将其分解为一组<strong>基于关系的同构图</strong>。首先，我们提取出面向用户的元素，如推文、评论等，并将其统一组织，以表示不同的关系。例如，我们提取一条显示User1对其他用户推文的评论的推文。我们将User1表示为v1，并在v1和提取的tweet评论之间添加边。我们对社交网络中的所有用户重复相同的过程，得到一个<strong>复杂的异构图</strong>。</p>
+<p>​        接下来，我们将初始图分解为多个关系图。多关系图只包含用户节点，且不同的边属性表示不同类型的关系。具体来说，分离过程定义如下：<br>$$<br>U^r_{i,j} = \left[\sum{W_{vr}\cdot W_{vr}^T}\right],r\in{f,c,p,h}<br>$$<br>4个关系分别为<em>following, commenting/replying, posting/retweeting, and hashtagging</em>。这里邻接矩阵$U^r_{N \times N}$是基于某种关系$r$下的同构用户图。$W_{vr}$代表行是用户节点，列是关系类型$r$的子矩阵。最后我们把提取到的用户特征向量用于多重关系图。初始特征记为$X = {x_v\in R^d}$，其中$x_v$是用户的初始$d$维特征向量。我们收集了所有关系的子图${U^r}|<em>{r=1}^R$然后，得到了处理好的多重关系图$G=\left( X,{U^r}|</em>{r=1}^R,Y\right)$。</p>
+<h4 id="C-关联感知GNN框架"><a href="#C-关联感知GNN框架" class="headerlink" title="C.关联感知GNN框架"></a>C.关联感知GNN框架</h4><ol>
+<li><p><strong><em>GCN-based关系融合层</em></strong>： 我们实现了GCN模块来学习每个关系中的区分用户节点表示，并将学习到的不同关系中的特征<strong>融合到中心节点</strong>。多层GCN的逐层传播规则定义如下：<br>$$<br>\bold{H}_r^{l+1}=\sigma\left(\tilde{D}^{-\frac{1}{2}}\tilde{U}_r\tilde{D}^{-\frac{1}{2}}H_r^{(l)}W^{(l)}\right)<br>$$<br>其中$\tilde{U}_r = U_r+I_N$，$r$代表图$U$的关系类型， $N$ 代表图里的节点总数。$\tilde{D}$</p>
+<p>是 $\tilde{D}_{ii}=\sum_i\tilde{U}_{ij} $ 的对角矩阵 ，$I_N$ 是单位矩阵，$W$ 是参数矩阵，$l$ 代表层数。$\sigma$ 是激活函数，比如<strong>Sigmoid</strong>或者<strong>ReLU</strong>。<strong>GCN</strong>的输入层是$H^{(0)}=X$ ，其中$X$是<strong>B</strong>部分构造的初始特征。我们使用$H_{v_i}^r$ 代表关系$r$下的用户节点$v_i$ 最后的特征表示。</p>
+<p>​        接下来我们将从不同关系下<strong>GCN</strong>层输出的特征表示融合在一起，然后获得最后中心节点的全连接层特征表示。我们将融合方程定义如下：<br>$$<br>z_{v_i} = norm \left(H_{v_i}^{(r=1)}\oplus H_{v_i}^{(r=2)}\oplus \cdot \cdot \cdot \oplus H_{v_i}^{(r=R)}\right)<br>$$<br>其中$v_i$是中心节点。$H_{v_i}^{(r)}$ 是关系$r\in R$和$d’$ 维的输出表示。$\oplus$ 代表结合所有关系下$v_i$的信息的操作，比如<strong>连接</strong>或者<strong>求和</strong>。norm代表为避免过拟合的正则操作。值得注意的是，在经过基于<strong>GCN</strong>的融合过程后，我们将多个关系图通过组合表示统一为一个完整的同构用户图$\mathcal{A}$，其中所有用户都参与其中。我们实现了这个统一的图，以方便进一步的处理。</p>
+</li>
+<li><p><strong><em>GAT_based 嵌入层</em></strong>： 为了更好地看破异常用户的伪装（更好的提取异常用户的特征），我们利<strong>GAT</strong>模块研究社交网络中用户之间的相关性，并将融合特征嵌入到用户图中。具体来说，我们定义<strong>GAT</strong>逐层传播规则如下:<br>$$<br>\bold{h}<em>{v_i}^{(l+1)} \leftarrow \overset{heads}| \left(\bold {h}_{v_i}^{(l)}\oplus \underset{\forall v_j \in N{(v_i)}}{AGG}\left(\bold {h}_{v_j}^{(l)}\right)\right)<br>$$<br>这里$\bold{h}_{v_i}^{(l+1)}$是用户$v_i$在<strong>GAT</strong>第$(l+1)$层的表示，输入$\bold{h}</em>{v_i}^{(0)}$是融合过程$z_{v_i}$的输出。$N(v_i)$表示根据图$\mathcal{A}$用户$v_i$的一组邻居，$\oplus$表示将$v_i$的信息与其邻居结合的算子。$ \overset{heads}|$表示逐头联接。$AGG$ 表示将邻域信息映射为向量的聚合函数。这里我们采用注意力聚合。基于<strong>GAT</strong>的用户嵌入后，我们使用$\bold{h}_{v_i}$作为最终的$d’$维表示。</p>
+<p>​    学习到的表示是检测器对社交网络中用户的认知，融合了自然语言语义、时间活动和完整用户图的结构信息。这些高级表示代表用户特征的核心，有助于识别异常帐户。</p>
+</li>
+<li><p><strong><em>加强的GNN聚合器</em></strong>： 基于关系融合层和嵌入层，我们得到了社交网络中每个用户的隐藏表示。为了实现细粒度的检测结果并能够适应真实场景，我们添加了一个以下增强的GNN聚合器来合并以前的嵌入。我们对GNN聚合的定义如下：<br>$$<br>\mathcal{Z}^{(l+1)} = \sigma\left( \underset{\forall v_j \in N{(v_i)}}{AGG}{(\mathcal{Z}^{(l)}_{v_i}\oplus\mathcal{Z}^{(l+1)}_{v_j})}\right)<br>$$<br>其中$\mathcal{Z}^{(l)}_{v_i}$是第$l$层嵌入的中心节点，$\mathcal{Z}^{(l+1)}_{v_i}$是第$(l+1)$层嵌入的邻居节点。表示嵌入总和。<strong>AGG</strong>表示平均聚集(mean aggregation)。$σ$为激活函数。这里我们采用<strong>ReLU</strong>非线性函数。</p>
+<p>​    由于<strong>GNN</strong>聚合器多用于巩固之前学习的嵌入，而不是学习更高级的语义，所以我们将<strong>GNN</strong>聚合器的输出维数固定为d，与基于<strong>GAT</strong>的嵌入层的输出维数相同，只采用一层<strong>GNN</strong>。</p>
+</li>
+</ol>
+<h4 id="D-优化函数"><a href="#D-优化函数" class="headerlink" title="D.优化函数"></a>D.优化函数</h4><p>​        经过增强的<strong>GNN</strong>聚合器后，对于每个中心用户节点 $v$ ，其最终嵌入是聚合器$\mathcal{Z}<em>v$的输出。因此，我们相应地将RAU-GNN的损失设计为<strong>交叉熵损失函数</strong>，以最小化ground truth-真实值和predicted label-预测标签的差距，实现异常检测。<br>$$<br>\mathcal{L}</em>{RAU-GNN}=-\displaystyle \sum_{v \in \mathcal{V}}log(y_v\cdot\mathcal P_v)+\lambda||\Theta||_2<br>$$<br>式中，$\mathcal V$为用户图中所有节点的集合，$y_v$为节点$v$的标签，$\mathcal P_v$为RAU-GNN预测的概率。我们定义$\mathcal P_v = σ (MLP(\mathcal Z_v))$。$σ$为激活函数。我们在RAU-GNN中采用<strong>Sigmoid</strong>。MLP表示多层感知。$λ$是权重参数，我们加入$||\Theta||_2$，它代表了基于<strong>GNN</strong>的框架中所有模块参数的$L_2$范数，得到了很好的泛化效果。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/09/15/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>JAVA学习</title>
+    <url>/2022/06/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E8%AF%95/</url>
+    <content><![CDATA[<h2 id="学习Java后端需要掌握的技能"><a href="#学习Java后端需要掌握的技能" class="headerlink" title="学习Java后端需要掌握的技能"></a>学习Java后端需要掌握的技能</h2><ol>
+<li><p>掌握Java基础知识</p>
+<a id="more"></a>
+</li>
+<li><p>掌握多线程的简单实用。一定要学习<strong>算法和数据结构</strong>。</p>
+</li>
+<li><p>学习前端基础（HTML、CSS、JavaScript），也要了解BootStrap\vue等前端框架。</p>
+</li>
+<li><p>学习MySQL的基本使用，SQL命令。</p>
+</li>
+<li><p>学习<strong>Maven</strong>。</p>
+</li>
+<li><p>Spring、 SpringMVC、 Hibernate、Mybatis 等框架的使用， (可选)熟悉 Spring 原理（大厂面试必备），然后很有必要学习⼀下SpringBoot。推荐把Spring、 SpringMVC好好学⼀下。</p>
+</li>
+<li><p>学习Linux的基本使用（常见命令、基本概念）</p>
+</li>
+<li><p>. 学习Dubbo、 Zookeeper、常见的消息队列（比如ActiveMq、 RabbitMQ）的使用.（这些东西可以通过黑马最后⼀个分布式项目来学，边看视频，边自己做，查阅网上博客，效果更好）。</p>
+</li>
+<li><p>可以学习<strong>NIO</strong>和<strong>Netty</strong>，丰富简历。</p>
+</li>
+<li><p>如果想去大厂， JVM 的⼀些知识也是必学的（Java内存区域、虚拟机垃圾算法、虚拟垃圾收集器、 JVM内存管理）推荐《深⼊理解Java虚拟机： JVM⾼级特性与最佳实践（最新第⼆版》</p>
+</li>
+</ol>
+<h2 id="大厂要求"><a href="#大厂要求" class="headerlink" title="大厂要求"></a>大厂要求</h2><ol>
+<li>底层知识比如<strong>JVM</strong>：不只是懂理论更会实操。</li>
+<li>面向对象编程能力：SOLID软件设计原则，《写了这么多年代码，你真的了解SOLID》吗。</li>
+<li><strong>框架能力</strong>：搞懂原理，看源码。</li>
+<li><strong>分布式系统开发能力</strong>：缓存、消息队列等等都要掌握，关键是还要能解决实际问题。</li>
+<li>追求写出优雅的代码，尝试新技术。</li>
+</ol>
+]]></content>
+  </entry>
 </search>
