@@ -6,12 +6,12 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title></title>
+    <title>RAU-GNN模型解析</title>
     <url>/2022/07/01/%E8%AE%BA%E6%96%87%E8%A7%A3%E6%9E%90/</url>
-    <content><![CDATA[<hr>
-<p>title:RAU-GNN模型解析</p>
-<p>引自论文&gt;Relevance-Aware Anomalous Users Detection in Social Network via Graph Neural Network</p>
-<hr>
+    <content><![CDATA[<p>引自论文</p>
+<blockquote>
+<p>Relevance-Aware Anomalous Users Detection in Social Network via Graph Neural Network</p>
+</blockquote>
 <h3 id="1-摘要"><a href="#1-摘要" class="headerlink" title="1  摘要"></a>1  摘要</h3><p>​        社交网络中的异常用户检测是解决安全问题的当务之急。受图神经网络(gnn)强大功能的推动，目前许多研究采用基于gnn的检测器来检测异常用户。然而，社交活动规模的不断扩大、用户的爆炸式增长以及多种技术伪装，使得用户检测成为一项艰巨的任务。本文提出了一种创新的关联感知异常用户检测模型(RAU-GNN)，以获得细粒度的检测结果。<a id="more"></a>RAU-GNN<strong>首先提取社交网络中所有类型用户的多个关系</strong>，包括良性用户和异常用户，并据此构建多个用户关系图。其次，我们<strong>采用关联感知的GNN框架来学习用户隐藏的特征，并对异常用户进行识别</strong>。具体而言，我们将图卷积网络(GCN)和图注意网络(GAT)结合起来，设计了一个基于GCN的关系融合层来聚合来自不同关系的初始信息，以及一个基于GAT的嵌入层来获得高级嵌入。最后，我们将学习到的表示提供给下面的GNN层，以便通过聚合最终用户嵌入来巩固节点嵌入。我们对真实世界的数据集进行了广泛的实验。实验结果表明，该方法能够获得较高的异常用户检测精度。</p>
 <h3 id="2-论文贡献"><a href="#2-论文贡献" class="headerlink" title="2  论文贡献"></a>2  论文贡献</h3><p>​        为了进一步检测社交网络中伪装良好的用户，本文提出了一种基于gnn的关联感知异常用户检测(RAU-GNN)模型，实现了细粒度的异常用户检测结果。我们首先提取社交网络中所有用户的多重关系。用户之间的关系大致可以定义为一种互动，包括转发、评论或转发等[22]。对于异常用户，他们更喜欢转发类似的博客，同时采取行动。所有这些特征都可以构造成一个统一的多元关系图。其次，我们利用基于关联感知的gnn框架，从用户那里学习所构造关系图中的隐藏表示。具体而言，我们采用GCN模块对不同关系的结构信息进行初始聚合，并将处理后的融合特征嵌入到中心节点。然后我们使用多头GAT模块学习高级嵌入，我们将最终的节点嵌入提供给下一GNN层，并聚合来自其邻居的所有用户信息，以巩固以前的嵌入。最后利用二值分类算法对学习到的特征进行分类，并对异常用户进行判别。实验结果表明，RAU-GNN能够获得较高的异常用户检测精度，优于其他可比较的基线模型。RAU-GNN的主要贡献如下:</p>
 <ul>
@@ -37,6 +37,10 @@
 </ol>
 <h4 id="D-优化函数"><a href="#D-优化函数" class="headerlink" title="D.优化函数"></a>D.优化函数</h4><p>​        经过增强的<strong>GNN</strong>聚合器后，对于每个中心用户节点 $v$ ，其最终嵌入是聚合器$\mathcal{Z}<em>v$的输出。因此，我们相应地将RAU-GNN的损失设计为<strong>交叉熵损失函数</strong>，以最小化ground truth-真实值和predicted label-预测标签的差距，实现异常检测。<br>$$<br>\mathcal{L}</em>{RAU-GNN}=-\displaystyle \sum_{v \in \mathcal{V}}log(y_v\cdot\mathcal P_v)+\lambda||\Theta||_2<br>$$<br>式中，$\mathcal V$为用户图中所有节点的集合，$y_v$为节点$v$的标签，$\mathcal P_v$为RAU-GNN预测的概率。我们定义$\mathcal P_v = σ (MLP(\mathcal Z_v))$。$σ$为激活函数。我们在RAU-GNN中采用<strong>Sigmoid</strong>。MLP表示多层感知。$λ$是权重参数，我们加入$||\Theta||_2$，它代表了基于<strong>GNN</strong>的框架中所有模块参数的$L_2$范数，得到了很好的泛化效果。</p>
 ]]></content>
+      <tags>
+        <tag>论文翻译</tag>
+        <tag>图神经网络</tag>
+      </tags>
   </entry>
   <entry>
     <title>Hello World</title>
